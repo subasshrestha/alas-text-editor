@@ -28,7 +28,7 @@ void pos(int *x,int *y,int *b)
 	 *y=out.x.dx;
 }
 void create()
-	{
+{
 	 clrscr();
 	 int gd=0,gm,i=0,x,y,a[50],j=0;
 	 initgraph(&gd,&gm,"E:\\TURBOC3\\BGI");
@@ -84,7 +84,7 @@ void create()
 			break;
 		}
 		else
-		{      if(wherex()==79)
+		{      if(wherex()==80)
 			{
 				printf("%c",ch);
 				s[i]=ch;
@@ -205,8 +205,7 @@ void open()
 	fp=fopen(fn,"r");
 	if(fp==NULL)
 	{
-	 printf("File does not exist");
-
+		 printf("File does not exist");
 	}
 	else
 	{
@@ -232,12 +231,10 @@ void open()
 					j=j+1;
 					b=0;
 				}
-
-					s[i]=ch;
-					printf("%c",ch);
-					i=i+1;
-					b++;
-
+				s[i]=ch;
+				printf("%c",ch);
+				i=i+1;
+				b++;
 			 }
 			 ch=getc(fp);
 		}
@@ -249,9 +246,11 @@ void open()
 			ch=getch();
 			if(ch==13)  //when use press enter
 			{
+				a[j]=wherex();
 				printf("\n");
 				s[i]='\n';
 				i=i+1;
+				j=j+1;
 			}
 			else if(ch==8)    //when user press backspace
 			{
@@ -271,9 +270,9 @@ void open()
 				else
 				{
 					s[i-1]='\0';
-					gotoxy(wherex()-1,wherey());
+					gotoxy(x-1,y);
 					printf(" ");
-					gotoxy(wherex()-1,wherey());
+					gotoxy(x-1,y);
 					i=i-1;
 				}
 				}
@@ -289,9 +288,22 @@ void open()
 			}
 			else
 			{
+				if(wherex()==80)
+				{
 				printf("%c",ch);
 				s[i]=ch;
+				a[j]=80;
+				j=j+1;
 				i=i+1;
+				}
+				else
+				{
+
+					printf("%c",ch);
+					s[i]=ch;
+					i=i+1;
+				}
+
 			}
 		}
 		fp=fopen(fn,"w");
