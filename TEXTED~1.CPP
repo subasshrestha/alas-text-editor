@@ -218,6 +218,7 @@ void open()
 			 if(ch=='\n')
 			 {
 				s[i]='\n';
+				printf("%c",ch);
 				a[j]=b+1;
 				i=i+1;
 				j=j+1;
@@ -225,20 +226,23 @@ void open()
 			 }
 			 else
 			 {
-				if(i==79)
+				if(b==80)
 				{
 					a[j]=80;
 					j=j+1;
+					b=0;
 				}
-				s[i]=ch;
-				i=i+1;
-				b++;
+
+					s[i]=ch;
+					printf("%c",ch);
+					i=i+1;
+					b++;
+
 			 }
 			 ch=getc(fp);
 		}
 		s[i]='\0';
 		t=i;
-		printf("%s",s);
 		fclose(fp);
 		while(ch!=19)  //add or remove character in opened file
 		{
@@ -249,7 +253,7 @@ void open()
 				s[i]='\n';
 				i=i+1;
 			}
-			else if(ch==8)    //when use press backspace
+			else if(ch==8)    //when user press backspace
 			{
 				if(i>0)
 				{
@@ -257,14 +261,12 @@ void open()
 				y=wherey();
 				if(x==1)
 				{
-				       //	continue;
 					s[i-1]='\0';
 					gotoxy(a[j-1],y-1);
 					printf(" ");
 					gotoxy(a[j-1],y-1);
 					i=i-1;
 					j=j-1;
-
 				}
 				else
 				{
