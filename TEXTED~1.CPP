@@ -57,9 +57,9 @@ void create()
 			{
 				//continue;
 				s[i-1]='\0';
-				gotoxy(a[j],y-1);
+				gotoxy(a[j-1],y-1);
 				printf(" ");
-				gotoxy(a[j],y-1);
+				gotoxy(a[j-1],y-1);
 				i=i-1;
 				j=j-1;
 
@@ -84,10 +84,20 @@ void create()
 			break;
 		}
 		else
-		{
-			printf("%c",ch);
-			s[i]=ch;
-			i=i+1;
+		{      if(wherex()==79)
+			{
+				printf("%c",ch);
+				s[i]=ch;
+				a[j]=80;
+				j=j+1;
+				i=i+1;
+			}
+			else
+			{
+				printf("%c",ch);
+				s[i]=ch;
+				i=i+1;
+			}
 		}
 	 }
 	 fname:
@@ -149,7 +159,7 @@ void create()
 void open()
 {
 	clrscr();
-	int gd=0,gm,i,t,x,y;
+	int gd=0,gm,i,t,x,y,a[50],j=0,b=0;
 	char s[1000],ch,fn[50];
 	initgraph(&gd,&gm,"E:\\TURBOC3\\BGI");
 	closegraph();
@@ -205,8 +215,25 @@ void open()
 		i=0;
 		while(!feof(fp)) //read character from file
 		{
-			 s[i]=ch;
-			 i=i+1;
+			 if(ch=='\n')
+			 {
+				s[i]='\n';
+				a[j]=b+1;
+				i=i+1;
+				j=j+1;
+				b=0;
+			 }
+			 else
+			 {
+				if(i==79)
+				{
+					a[j]=80;
+					j=j+1;
+				}
+				s[i]=ch;
+				i=i+1;
+				b++;
+			 }
 			 ch=getc(fp);
 		}
 		s[i]='\0';
@@ -224,9 +251,20 @@ void open()
 			}
 			else if(ch==8)    //when use press backspace
 			{
-				if(wherex()==1)
+				if(i>0)
 				{
-					continue;
+				x=wherex();
+				y=wherey();
+				if(x==1)
+				{
+				       //	continue;
+					s[i-1]='\0';
+					gotoxy(a[j-1],y-1);
+					printf(" ");
+					gotoxy(a[j-1],y-1);
+					i=i-1;
+					j=j-1;
+
 				}
 				else
 				{
@@ -235,6 +273,7 @@ void open()
 					printf(" ");
 					gotoxy(wherex()-1,wherey());
 					i=i-1;
+				}
 				}
 			}
 			else if(ch==27)       //when user press esc
