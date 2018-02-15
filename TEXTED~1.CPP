@@ -8,19 +8,19 @@ void help();
 FILE *fp;
 union REGS in,out;
 void show()
-	{
+{
 	 in.x.ax=1;
 	 int86(0x33,&in,&out);
 }
 void set(int x,int y)
-	{
+{
 	 in.x.ax=4;
 	 in.x.cx=x;
 	 in.x.dx=y;
 	 int86(0x33,&in,&out);
 }
 void pos(int *x,int *y,int *b)
-	{
+{
 	 in.x.ax=3;
 	 int86(0x33,&in,&out);
 	 *b=out.x.bx;
@@ -31,17 +31,17 @@ void create()
 {
 	 clrscr();
 	 int gd=0,gm,i=0,x,y,a[50],j=0;
-	 initgraph(&gd,&gm,"E:\\TURBOC3\\BGI");
+	 initgraph(&gd,&gm,"C:\\TURBOC3\\BGI");
 	 char s[1000],fn[50],ch;
 	 setbkcolor(8);
 	 closegraph();
 	 printf("Ctrl+s to save and Esc to exit:\n");
-	 while(ch!=19)   	 //read character for text until user press ctrl+s or esc
+	 while(ch!=19)   //Read character until user press ctrl+s or esc
 	 {
 		ch=getch();
 		if(ch==13)
 		{
-			a[j]=wherex();
+			a[j]=wherex(); //it stores current position for backspace
 			printf("\n");
 			s[i]='\n';
 			i=i+1;
@@ -49,30 +49,28 @@ void create()
 		}
 		else if(ch==8)
 		{
-		  if(i>0)
-		  {
-			x=wherex();
-			y=wherey();
-			if(x==1)
+			if(i>0)
 			{
-				//continue;
-				s[i-1]='\0';
-				gotoxy(a[j-1],y-1);
-				printf(" ");
-				gotoxy(a[j-1],y-1);
-				i=i-1;
-				j=j-1;
-
+				x=wherex();
+				y=wherey();
+				if(x==1)
+				{
+					s[i-1]='\0';
+					gotoxy(a[j-1],y-1);
+					printf(" ");
+					gotoxy(a[j-1],y-1);
+					i=i-1;
+					j=j-1;
+				}
+				else
+				{
+					s[i-1]='\0';
+					gotoxy(x-1,y);
+					printf(" ");
+					gotoxy(x-1,y);
+					i=i-1;
+				}
 			}
-			else
-			{
-				s[i-1]='\0';
-				gotoxy(x-1,y);
-				printf(" ");
-				gotoxy(x-1,y);
-				i=i-1;
-			}
-		    }
 		}
 		else if(ch==27)
 		{
@@ -83,9 +81,14 @@ void create()
 			s[i]='\0';
 			break;
 		}
+		else if(ch==0)
+		{
+			ch=getch();
+		}
 		else
-		{      if(wherex()==80)
-			{
+		{
+		       if(wherex()==80)
+		       {
 				printf("%c",ch);
 				s[i]=ch;
 				a[j]=80;
@@ -133,6 +136,10 @@ void create()
 		{
 			goto end;
 		}
+		else if(ch==0)
+		{
+			ch=getch();
+		}
 		else
 		{
 			printf("%c",ch);
@@ -145,23 +152,23 @@ void create()
 		printf("File name can't be empty");
 		goto fname;
 	 }
-		fp=fopen(fn,"w");
-		fprintf(fp,"%s",s);
-		fclose(fp);
-		printf("\nFile saved sucessfully");
-		printf("\nPress any key to continue...");
-		if(getch()==27)
-		{
-			exit(0);
-		}
-		end:
+	 fp=fopen(fn,"w");
+	 fprintf(fp,"%s",s);
+	 fclose(fp);
+	 printf("\nFile saved sucessfully");
+	 printf("\nPress any key to continue...");
+	 if(getch()==27)
+	 {
+		exit(0);
+	 }
+	 end:
 }
 void open()
 {
 	clrscr();
 	int gd=0,gm,i,t,x,y,a[50],j=0,b=0;
 	char s[1000],ch,fn[50];
-	initgraph(&gd,&gm,"E:\\TURBOC3\\BGI");
+	initgraph(&gd,&gm,"C:\\TURBOC3\\BGI");
 	closegraph();
 	printf("Enter file name to open:");
 	i=0;
@@ -194,6 +201,10 @@ void open()
 		else if(ch==27)    //when user press esc
 		{
 			goto end;
+		}
+		else if(ch==0)
+		{
+			ch=getch();
 		}
 		else
 		{
@@ -256,25 +267,25 @@ void open()
 			{
 				if(i>0)
 				{
-				x=wherex();
-				y=wherey();
-				if(x==1)
-				{
-					s[i-1]='\0';
-					gotoxy(a[j-1],y-1);
-					printf(" ");
-					gotoxy(a[j-1],y-1);
-					i=i-1;
-					j=j-1;
-				}
-				else
-				{
-					s[i-1]='\0';
-					gotoxy(x-1,y);
-					printf(" ");
-					gotoxy(x-1,y);
-					i=i-1;
-				}
+					x=wherex();
+					y=wherey();
+					if(x==1)
+					{
+						s[i-1]='\0';
+						gotoxy(a[j-1],y-1);
+						printf(" ");
+						gotoxy(a[j-1],y-1);
+						i=i-1;
+						j=j-1;
+					}
+					else
+					{
+						s[i-1]='\0';
+						gotoxy(x-1,y);
+						printf(" ");
+						gotoxy(x-1,y);
+						i=i-1;
+					}
 				}
 			}
 			else if(ch==27)       //when user press esc
@@ -286,15 +297,19 @@ void open()
 				s[i]='\0';
 				break;
 			}
+			else if(ch==0)
+			{
+				ch=getch();
+			}
 			else
 			{
 				if(wherex()==80)
 				{
-				printf("%c",ch);
-				s[i]=ch;
-				a[j]=80;
-				j=j+1;
-				i=i+1;
+					printf("%c",ch);
+					s[i]=ch;
+					a[j]=80;
+					j=j+1;
+					i=i+1;
 				}
 				else
 				{
@@ -330,7 +345,7 @@ void del()
 {
 	clrscr();
 	int gd=0,gm,i,x,y;
-	initgraph(&gd,&gm,"E:\\TURBOC3\\BGI");
+	initgraph(&gd,&gm,"C:\\TURBOC3\\BGI");
 	closegraph();
 	char fn[50],ch;
 	printf("Enter file name to delete:");
@@ -365,6 +380,10 @@ void del()
 		{
 			goto end;
 		}
+		else if(ch==0)
+		{
+			ch=getch();
+		}
 		else
 		{
 			printf("%c",ch);
@@ -396,7 +415,7 @@ int main()
 	clrscr();
 	int gd=DETECT,gm,x,y,b,x1,y1,i;
 	char ch;
-	initgraph(&gd,&gm,"E:\\TURBOC3\\BGI");
+	initgraph(&gd,&gm,"C:\\TURBOC3\\BGI");
 	show();
 	set(1000,1050);
 	rectangle(0,60,getmaxx(),getmaxy());
