@@ -1,2 +1,2 @@
 # alas-text-editor
-This is the simple text made using C programming language.
+This is the simple text editor made using C programming language.
