@@ -30,12 +30,13 @@ void pos(int *x,int *y,int *b)
 void create()
 {
 	 clrscr();
-	 int gd=0,gm,i=0,x,y,a[50],j=0;
+	 int gd=0,gm,i=0,x,y,a[50],j=0,k=0;
 	 initgraph(&gd,&gm,"C:\\TURBOC3\\BGI");
 	 char s[1000],fn[50],ch;
 	 setbkcolor(8);
 	 closegraph();
 	 printf("Ctrl+s to save and Esc to exit:\n");
+	 writetext:
 	 while(ch!=19)   //Read character until user press ctrl+s or esc
 	 {
 		ch=getch();
@@ -105,8 +106,8 @@ void create()
 	 }
 	 fname:
 	 printf("\nEnter file name to save:");
-	 i=0;
 	 ch='a';
+	 k=0;
 	 while(ch!=13)   //read character for filename until user press enter or esc
 	 {
 		ch=getch();
@@ -120,16 +121,16 @@ void create()
 			}
 			else
 			{
-				fn[i-1]='\0';
+				fn[k-1]='\0';
 				gotoxy(x-1,y);
 				printf(" ");
 				gotoxy(x-1,y);
-				i=i-1;
+				k=k-1;
 			}
 		}
 		else if(ch==13)
 		{
-			fn[i]='\0';
+			fn[k]='\0';
 			break;
 		}
 		else if(ch==27)
@@ -143,8 +144,8 @@ void create()
 		else
 		{
 			printf("%c",ch);
-			fn[i]=ch;
-			i=i+1;
+			fn[k]=ch;
+			k=k+1;
 		}
 	 }
 	 if(fn[0]=='\0')       //check file name is empty or not
@@ -152,14 +153,47 @@ void create()
 		printf("File name can't be empty");
 		goto fname;
 	 }
-	 fp=fopen(fn,"w");
-	 fprintf(fp,"%s",s);
-	 fclose(fp);
+	 fp=fopen(fn,"r");
+	 if(fp==NULL)
+	 {
+		fclose(fp);
+		fp=fopen(fn,"w");
+		fprintf(fp,"%s",s);
+		fclose(fp);
+	 }
+	 else
+	 {
+		printf("\n\n%s already exists.\nDo you want to replace it ? (y/n):",fn);
+		fclose(fp);
+		while(ch!='y'||ch!='n'||ch!=27)
+		{
+			ch=getch();
+			if(ch=='y')
+			{
+				fp=fopen(fn,"w");
+				fprintf(fp,"%s",s);
+				fclose(fp);
+				break;
+			}
+			if(ch=='n')
+			{
+				clrscr();
+				gotoxy(1,1);
+				printf("Ctrl+s to save and Esc to exit:\n");
+				printf("%s",s);
+				goto writetext;
+			}
+			if(ch==27)
+			{
+				exit(1);
+			}
+		}
+	 }
 	 printf("\nFile saved sucessfully");
 	 printf("\nPress any key to continue...");
 	 if(getch()==27)
 	 {
-		exit(0);
+		exit(1);
 	 }
 	 end:
 }
@@ -271,7 +305,7 @@ void open()
 					y=wherey();
 					if(x==1)
 					{
-						s[i-1]='\0';
+						s[i]=' ';
 						gotoxy(a[j-1],y-1);
 						printf(" ");
 						gotoxy(a[j-1],y-1);
@@ -280,7 +314,7 @@ void open()
 					}
 					else
 					{
-						s[i-1]='\0';
+						s[i]=' ';
 						gotoxy(x-1,y);
 						printf(" ");
 						gotoxy(x-1,y);
