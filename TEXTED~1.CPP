@@ -85,6 +85,15 @@ void create()
 		else if(ch==0)
 		{
 			ch=getch();
+			if(ch==75)
+			{
+				gotoxy(wherex()-1,wherey());
+				i--;
+			}
+			if(ch==77)
+			{
+				gotoxy(wherex()+1,wherey());
+			}
 		}
 		else
 		{
@@ -140,6 +149,15 @@ void create()
 		else if(ch==0)
 		{
 			ch=getch();
+			if(ch==75)
+			{
+				gotoxy(wherex()-1,wherey());
+				i--;
+			}
+			if(ch==77)
+			{
+				gotoxy(wherex()+1,wherey());
+			}
 		}
 		else
 		{
@@ -464,14 +482,10 @@ int main()
 	line(70,30,70,60);
 	line(140,30,140,60);
 	line(210,30,210,60);
-	line(270,30,270,60);
-	line(340,30,340,60);
 	outtextxy(250,10,"TEXT EDITOR");
 	outtextxy(10,40,"Create");
 	outtextxy(90,40,"Open");
 	outtextxy(150,40,"Delete");
-	outtextxy(220,40,"About");
-	outtextxy(290,40,"Help");
 	point1:
 	while(!kbhit())
 	{
@@ -508,26 +522,7 @@ int main()
 						goto start;
 					}
 			}
-			for(x1=211;x1<270;x1++)
-			{
-				for(y1=30;y1<60;y1++)
-				{
-					if(x1==x&&y1==y)
-					{
-						about();
-					}
-				}
-			}
-			for(x1=271;x1<340;x1++)
-			{
-				for(y1=30;y1<60;y1++)
-				{
-					if(x1==x&&y1==y)
-					{
-						help();
-					}
-				}
-			}
+
 		}
 	}
 	ch=getch();
@@ -556,20 +551,4 @@ int main()
 	{
 		goto point1;
 	}
-}
-void about()
-{
-	setfillstyle(SOLID_FILL,0);
-	rectangle(5,70,getmaxx()-5,250);
-	floodfill(75,90,15);
-	gotoxy(3,6);
-	printf("About");
-}
-void help()
-{
-	setfillstyle(SOLID_FILL,0);
-	rectangle(5,70,getmaxx()-5,250);
-	floodfill(75,90,15);
-	gotoxy(3,6);
-	printf("Help\t");
 }
